@@ -1,0 +1,26 @@
+name: GitHub Actions Build and Deploy Demo
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@main
+      with:
+        node-version: '14'
+    - name: Install and Build
+      run: |
+        npm install
+        npm run-script build
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3.7.1
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: build
+        CLEAN: true
